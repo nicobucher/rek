@@ -124,9 +124,10 @@ def flatten(l):
 
 
 def open_rb_export():
-    if Path(args.exportfile).is_file():
+    if args.exportfile and Path(args.exportfile).is_file():
         return ET.parse(args.exportfile)
     else:
+        print("Please provide reference to valid PIONEER rekordbox export (xml) file.")
         sys.exit()
 
 
@@ -202,7 +203,12 @@ def main():
     )
     parser.add_argument("exportfile", nargs="?")
     parser.add_argument("-o", "--outpath", default=".")
-    parser.add_argument("-p", "--prefix", default="")
+    parser.add_argument(
+        "-p",
+        "--prefix",
+        default="",
+        help="Alternative location of the database. This prefix replaces the drive letter in all file paths extracted from the exportfile.",
+    )
     parser.add_argument(
         "--no-flac",
         action="store_true",
