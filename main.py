@@ -6,6 +6,7 @@ import subprocess
 import argparse
 import wave
 import aifc
+import re
 from pathlib import PureWindowsPath, Path
 
 
@@ -97,10 +98,10 @@ def get_track_from_collection(trackid, xml_root):
 
 
 def set_playlist_path(playlist_name):
+    playlist_name = re.sub(r"[^\w_. -]", "_", playlist_name)
     path = Path(args.outpath, playlist_name)
     print("Playlist DIR: " + str(path))
-    if not path.exists():
-        path.mkdir()
+    path.mkdir(parents=True, exist_ok=False)
     return path
 
 
@@ -184,8 +185,6 @@ def check_ffmpeg():
 
 
 def main_menu():
-    if not Path(args.outpath).exists():
-        Path(args.outpath).mkdir()
     print_structure(open_rb_export())
 
 
